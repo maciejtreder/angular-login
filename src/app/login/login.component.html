@@ -1,0 +1,31 @@
+<h1 class="h5 mb-3 font-weight-normal">Hello {{($user | async)?.name}}</h1>
+<form *ngIf="($user | async).unauthorized" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-signin">
+    <input 
+        type="text" 
+        placeholder="Login"
+        class="form-control"
+        formControlName="login" 
+        [class.valid]="loginForm.get('login')?.valid && (loginForm.get('login')?.dirty || loginForm.get('login')?.touched)"
+        [class.invalid]="loginForm.get('login')?.invalid && (loginForm.get('login')?.dirty || loginForm.get('login')?.touched)"
+    />
+    <small *ngIf="loginForm.get('login')?.invalid && 
+        (loginForm.get('login')?.dirty || loginForm.get('login')?.touched) && 
+        loginForm.get('login')?.hasError('required')">
+            This field is required
+    </small>
+    <input 
+        type="password" 
+        placeholder="Password"
+        class="form-control"
+        formControlName="password" 
+        [class.valid]="loginForm.get('password')?.valid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+        [class.invalid]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+    />
+    <small *ngIf="loginForm.get('password')?.invalid && 
+        (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) && 
+        loginForm.get('password')?.hasError('required')">
+            This field is required
+    </small>
+    <input type="submit" value="Sign in" [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block"/>
+</form>
+<small *ngIf="loginForm.hasError('unauthorized')">Login and/or password incorrect</small>
